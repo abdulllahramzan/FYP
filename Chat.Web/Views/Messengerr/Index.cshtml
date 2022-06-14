@@ -1,0 +1,21 @@
+﻿@model List<Chat.Web.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Index";
+}
+<link href="~/site2.css" rel="stylesheet" />
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h1 class="mb-5">Start Chatting with Users</h1>
+            <ul class="navbar-nav flex-grow-1">
+                @foreach (var item in Model)
+                {
+                    <li class="nav-item mb-2">
+                        <a class="btn btn-success" href="/Messengerr/Chat?receiverId=@item.Id">@item.FullName</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
