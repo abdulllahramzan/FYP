@@ -32,21 +32,27 @@ connection.start().then(function () {
 document.getElementById("messengerButton").addEventListener("click", function (event) {
     var message = document.getElementById("messengerInput").value;
     var receiverId = document.getElementById("receiverId").value;
+    var time = document.getElementById("time").value;
     if (message!="") {
-        connection.invoke("SendPrivateMessage", receiverId, message).catch(function (err) {
+        connection.invoke("SendPrivateMessage", receiverId, message, time).catch(function (err) {
             return console.error(err.toString());
         });
         event.preventDefault();
+        const p = document.createElement("p");
+        var i = document.createElement("p");
+        p.textContent = `${message }`;
+        i.textContent = `${time}`;
+        i.classList.add("sender2");
+        p.classList.add("sender");
+        
+        i.appendChild(p)
+        document.getElementsByClassName("messageCustom")[0].appendChild(i);
 
-        var p = document.createElement("p");
-        p.textContent = `${message}`;
-        p.classList.add("sender")
-        document.getElementsByClassName("messageCustom")[0].appendChild(p);
         document.getElementById("messengerInput").value = ""
     }
 });
 
-connection.on("ReceiveMessage", function (senderName, message) {
+connection.on("ReceiveMessage", function (senderName, message, time) {
     var p = document.createElement("p");
     p.textContent = `${message}`;
     p.classList.add("receiver")

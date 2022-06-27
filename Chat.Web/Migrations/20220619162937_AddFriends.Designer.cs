@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chat.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220608090322_AddFriendsToDB")]
-    partial class AddFriendsToDB
+    [Migration("20220619162937_AddFriends")]
+    partial class AddFriends
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,8 +107,8 @@ namespace Chat.Web.Migrations
                     b.Property<DateTime?>("BecameFriendsTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FriendStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("FriendStatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("RequestTime")
                         .HasColumnType("datetime2");

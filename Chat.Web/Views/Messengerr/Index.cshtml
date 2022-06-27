@@ -2,20 +2,69 @@
 @{
     ViewData["Title"] = "Index";
 }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
 <link href="~/site2.css" rel="stylesheet" />
-<div class="container">
-    <div class="row">
-        <div class="col-lg-6">
-            <h1 class="mb-5">Start Chatting with Users</h1>
-            <ul class="navbar-nav flex-grow-1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<div class="row">
+    <div class="col-lg-1 col-md-1 col-xl-1 col-sm-1" style="background-color:#eee !important; height : 100%;"></div>
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10">
+        <div class="">
+            <div class="row" style="justify-content: end; display:flex;">
+                <a href="/" style=" margin-right:auto !important; background: none; color: black !important; "> <i class="fa fa-arrow-left"></i></a>
+                <i style="margin-top:20px !important; margin-right:30px">@User.Identity.Name <i class="far fa-User"></i></i>
+                <a class="btn btn-primary align-content-end button_X" href="/Messengerr/AllUsers">Add Friends <i class="fa fa-Users"></i></a>
+                <a class="btn btn-primary align-content-end button_X" href="/Messengerr/FriendRequests">Friends Requests <i class="far fa-envelope"></i></a>
+
+            </div>
+            <h2 style="margin-left:20px; font-family:cursive">Friends</h2>
+            <ol class="navbar-nav flex-grow-1 " style="list-style:none">
                 @foreach (var item in Model)
                 {
+
                     <li class="nav-item mb-2">
-                        <a class="btn btn-success" href="/Messengerr/Chat?receiverId=@item.Id">@item.FullName</a>
+                        @{
+                            if (item.Avatar == "avatar1.png")
+                            {
+
+
+                                <img src="/images/icons/avatar1.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+
+
+                            }
+                            else if (item.Avatar == "avatar2.png")
+                            {
+
+
+                                <img src="/images/icons/avatar2.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+
+                            }
+                            else if (item.Avatar == "avatar2.png")
+                            {
+
+                                <img src="/images/icons/avatar3.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+
+                            }
+                            else if (item.Avatar == "avatar3.png")
+                            {
+
+                                <img src="/images/icons/avatar4.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+
+                            }
+                        }
+                        <a style="border-radius:10px; margin-left:50px !important " href="/Messengerr/Chat?receiverId=@item.Id">@item.FullName</a>
                     </li>
+
                 }
-            </ul>
+            </ol>
+
         </div>
     </div>
+    <div class="col-lg-1 col-md-1 col-xl-1 col-sm-1" style="background-color:#eee !important; height : 100%;"></div>
 </div>
+
+
+
 

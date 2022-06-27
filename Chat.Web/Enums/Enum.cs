@@ -11,17 +11,14 @@ namespace Chat.Web.Enums
     {
         public enum FriendStatus
         {
+            None = 'N',
 
-            [Description("Pending")]
             Pending = 'P',
 
-            [Description("Approved")]
             Approved = 'A',
 
-            [Description("Rejected")]
             Rejected = 'R',
 
-            [Description("Blocked")]
             Blocked = 'B'
         }
     }

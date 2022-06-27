@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Chat.Web.Migrations
 {
-    public partial class AddFriendsToDB : Migration
+    public partial class AddFriends : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,7 @@ namespace Chat.Web.Migrations
                     RequestedToId = table.Column<string>(nullable: true),
                     RequestTime = table.Column<DateTime>(nullable: true),
                     BecameFriendsTime = table.Column<DateTime>(nullable: true),
-                    FriendStatus = table.Column<int>(nullable: false)
+                    FriendStatus = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

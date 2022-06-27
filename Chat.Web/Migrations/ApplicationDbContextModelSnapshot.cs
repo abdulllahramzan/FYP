@@ -105,8 +105,8 @@ namespace Chat.Web.Migrations
                     b.Property<DateTime?>("BecameFriendsTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FriendStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("FriendStatus")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("RequestTime")
                         .HasColumnType("datetime2");

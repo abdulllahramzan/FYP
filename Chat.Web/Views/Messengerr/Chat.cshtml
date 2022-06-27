@@ -1,29 +1,49 @@
 ﻿
 @model Chat.Web.ViewModels.VmMessage
-    <link href="~/site2.css" rel="stylesheet" />
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="mb-3"> @Model.User.UserName</h1>
-            <hr />
-        </div>
-        <div class="col-lg-12">
-            <div class="messageCustom mb-3">
-                @foreach (var item in Model.Messages)
-                {
+<link href="~/site2.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-                    <p class="@(item.SenderId==Model.SenderId?"sender":"receiver")"> @item.Text @*<span class="messageDate">@item.CreatedDate.ToString("hh : mm tt")</span>*@</p>
-                }
+<div class="">
+    <div class="col-lg-2 col-md-2 col-xl-2 col-sm-2" style="background-color:#eee !important; height : 100%; "></div>
+
+    <div class="col-xl-8 col-lg-8 col-md-8">
+        <div class="row">
+            <div class="col-lg-12">
+                <a href="/Messengerr/privateUsers" style=" margin-right:auto !important; background: none; color: black; "> <i class="fa fa-arrow-left"></i></a>
+                <h2 style="font-family:cursive; justify-content:center; display:flex">@Model.User.FullName</h2>
+                <hr />
+            </div>
+            <div class="col-lg-12">
+                <div class="messageCustom mb-3">
+                    @foreach (var item in Model.Messages)
+                    {
+                        <div class="@(item.SenderId==Model.SenderId?"sender":"receiver")" style="margin-top: 10px !important">
+                            <p class=" d-flex justify-content-between" style="font-size: 10px; margin-top: 0px !important; margin-bottom: 5px !important;"><span class="far fa-clock mt-1 mr-1"></span>  @item.CreatedDate.ToString()</p>
+                            <p style=" margin-top: 0px !important; margin-bottom: 0px !important;">@item.Text </p>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="ml-5" style="padding:0;"></div>
+                <div class="col-lg-10" style="padding:0;">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="messengerInput" placeholder="Type Message.....">
+                        <input hidden id="receiverId" value="@Model.User.Id">
+                        <input hidden id="time" value="@DateTime.Now">
+
+                    </div>
+                </div>
+                <div class="col-lg-1" style="padding:0;">
+                    <button class=" btn btn-outline-dark btn-primary " type="button" id="messengerButton">Send</button>
+                </div>
             </div>
         </div>
-        <div class="col-lg-12">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" id="messengerInput" placeholder="Mesajinizi yazin...">
-                <input hidden id="receiverId" value="@Model.User.Id">
-                <button class="ml-2 btn btn-outline-dark" type="button" id="messengerButton">Send</button>
-            </div>
-        </div>
-    </div>
+    <div class="col-lg-2 col-md-2 col-xl-2 col-sm-2" style="background-color:#eee !important; height : 100%; "></div>
+
 </div>
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>

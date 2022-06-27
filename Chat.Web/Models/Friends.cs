@@ -14,13 +14,14 @@ namespace Chat.Web.Models
 
         [ForeignKey("RequestedById")]
         public ApplicationUser RequestedBy { get; set; }
+        public string RequestedById { get; set; }
         [ForeignKey("RequestedToId")]
         public ApplicationUser RequestedTo { get; set; }
-
+        public string RequestedToId { get; set; }
         public DateTime? RequestTime { get; set; }
 
         public DateTime? BecameFriendsTime { get; set; }
 
-        public FriendStatus FriendStatus { get; set; }
+        public string FriendStatus { get; set; }
     }
 }

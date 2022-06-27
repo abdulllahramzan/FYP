@@ -31,11 +31,12 @@ namespace Chat.Web.Hubs
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
         }
-        public async Task SendPrivateMessage(string receiverId, string message)
+        public async Task SendPrivateMessage(string receiverId, string message, string time)
         {
             var loggedInUsername = _httpContextAccessor.HttpContext.User.Identity.Name;
             var loggedInUserId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault().Value;
-            await Clients.User(receiverId).SendAsync("ReceiveMessage", loggedInUsername, message);
+            var date = DateTime.Now.ToString();
+            await Clients.User(receiverId).SendAsync("ReceiveMessage", loggedInUsername, message, time);
 
             PrivateMessage datamessage = new PrivateMessage()
             {

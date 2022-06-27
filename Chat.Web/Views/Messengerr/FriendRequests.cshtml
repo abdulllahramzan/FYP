@@ -1,0 +1,90 @@
+﻿@model List<Chat.Web.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Friends Requests";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link href="~/site2.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-lg-1 col-md-1 col-xl-1 col-sm-1" style="background-color:#eee !important; height : 100%;"></div>
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10">
+        <div class="row">
+            <div class="">
+                <a href="/Messengerr/privateUsers" style=" margin-right:auto !important; background: none; color: black; "> <i class="fa fa-arrow-left"></i></a>
+                <h2 style="font-family:cursive; justify-content:center; display:flex"> Friends Requests</h2>
+                <table class="table" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Avatar
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @{
+                                    if (item.Avatar == "avatar1.png")
+                                    {
+                                        <td>
+                                            <div>
+                                                <img src="/images/icons/avatar1.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+                                            </div>
+                                        </td>
+                                    }
+                                    else if (item.Avatar == "avatar2.png")
+                                    {
+                                        <td>
+                                            <div>
+                                                <img src="/images/icons/avatar2.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+                                            </div>
+                                        </td>
+                                    }
+                                    else if (item.Avatar == "avatar2.png")
+                                    {
+                                        <td>
+                                            <div>
+                                                <img src="/images/icons/avatar3.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+                                            </div>
+                                        </td>
+                                    }
+                                    else if (item.Avatar == "avatar3.png")
+                                    {
+                                        <td>
+                                            <div>
+                                                <img src="/images/icons/avatar4.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+                                            </div>
+                                        </td>
+                                    }
+                                }
+                                <td style="font-size:22px">
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td style="font-size:22px">
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+                                    <a class="btn btn-success" href="/Messengerr/ActOnRequest?Id=@item.Id&status=approve">Approve</a>
+                                    <a class="btn ml-3" style="background-color: #c92121 !important;" href="/Messengerr/ActOnRequest?Id=@item.Id&status=reject">Reject</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-1 col-md-1 col-xl-1 col-sm-1" style="background-color:#eee !important; height : 100%;"></div>
+</div>
+

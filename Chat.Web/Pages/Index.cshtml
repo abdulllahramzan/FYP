@@ -20,15 +20,12 @@
             </a>
         </div>
         @*<div>
-            <a href="https://localhost:5001/account/loginapi/?Id=@User.Identity.Name">Private Chat</a>
-        </div>*@
+                <a href="https://localhost:5001/account/loginapi/?Id=@User.Identity.Name">Private Chat</a>
+            </div>*@
         <div>
-            <a asp-controller="Messengerr" asp-action="Index" >Private Chat</a>
+            <a class="btn btn-primary w-100" asp-controller="Messengerr" asp-action="Index">Inbox</a>
         </div>
 
-        <div>
-            <a asp-controller="Test" asp-action="Index"  >Test</a>
-        </div>
         <ul class="rooms list-unstyled" id="room-list" data-bind="foreach: chatRooms">
             <li><a href="#" data-bind="text: $data.name, attr: { 'data-roomId': $data.id }, click: $parent.joinRoom.bind($data), css: { active: $root.joinedRoom() == $data.name()}"></a></li>
         </ul>
