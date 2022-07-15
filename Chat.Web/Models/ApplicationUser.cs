@@ -18,5 +18,6 @@ namespace Chat.Web.Models
         public ICollection<Friends> Friend1 { get; set; }
         [InverseProperty("RequestedTo")]
         public ICollection<Friends> Friend2 { get; set; }
+        public bool Locked { get; set; }
     }
 }

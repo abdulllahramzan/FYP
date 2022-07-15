@@ -18,7 +18,7 @@
                 <hr />
             </div>
             <div class="col-lg-12">
-                <div class="messageCustom mb-3">
+                <div class="messageCustom mb-3" style="overflow-y:scroll; height:470px;">
                     @foreach (var item in Model.Messages)
                     {
                         <div class="@(item.SenderId==Model.SenderId?"sender":"receiver")" style="margin-top: 10px !important">
@@ -29,18 +29,55 @@
                 </div>
             </div>
             <div class="ml-5" style="padding:0;"></div>
-                <div class="col-lg-10" style="padding:0;">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="messengerInput" placeholder="Type Message.....">
-                        <input hidden id="receiverId" value="@Model.User.Id">
-                        <input hidden id="time" value="@DateTime.Now">
+            <div class="col-lg-9" style="padding:0;">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="messengerInput" placeholder="Type Message.....">
+                    <input hidden id="receiverId" value="@Model.User.Id">
+                    <input hidden id="time" value="@DateTime.Now">
 
-                    </div>
-                </div>
-                <div class="col-lg-1" style="padding:0;">
-                    <button class=" btn btn-outline-dark btn-primary " type="button" id="messengerButton">Send</button>
                 </div>
             </div>
+            @*<div class="col-lg-1">
+                <a id="emojibtn" href="#">
+                    <i class="far fa-smile"></i>
+                </a>
+                <div class="emoticon-container d-none" id="emojis-container">
+                    <a href="#">
+                        <input type="hidden" value=":)" />
+                        <img src="~/images/emojis/emoji1.png" />
+                    </a>
+                    <a href="#">
+                        <input type="hidden" value=":P" />
+                        <img src="~/images/emojis/emoji2.png" />
+                    </a>
+                    <a href="#">
+                        <input type="hidden" value=":O" />
+                        <img src="~/images/emojis/emoji3.png" />
+                    </a>
+                    <a href="#">
+                        <input type="hidden" value=":-)" />
+                        <img src="~/images/emojis/emoji4.png" />
+                    </a>
+                    <a href="#">
+                        <input type="hidden" value="B|" />
+                        <img src="~/images/emojis/emoji5.png" />
+                    </a>
+                    <a href="#">
+                        <input type="hidden" value=":D" />
+                        <img src="~/images/emojis/emoji6.png" />
+                    </a>
+                    <a href="#">
+                        <input type="hidden" value="<3" />
+                        <img src="~/images/emojis/emoji7.png" />
+                    </a>
+                </div>
+            </div>*@
+            <div class="col-lg-1">
+                <button class=" btn btn-outline-dark btn-primary " type="button" id="messengerButton"><i class="fas fa-paper-plane"></i></button>
+            </div>
+
+
+        </div>
         </div>
     <div class="col-lg-2 col-md-2 col-xl-2 col-sm-2" style="background-color:#eee !important; height : 100%; "></div>
 

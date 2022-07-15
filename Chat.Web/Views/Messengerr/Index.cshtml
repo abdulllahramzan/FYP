@@ -8,7 +8,7 @@
 <link href="~/site2.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-<div class="row">
+<div class="">
     <div class="col-lg-1 col-md-1 col-xl-1 col-sm-1" style="background-color:#eee !important; height : 100%;"></div>
     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10">
         <div class="">
@@ -20,51 +20,127 @@
 
             </div>
             <h2 style="margin-left:20px; font-family:cursive">Friends</h2>
-            <ol class="navbar-nav flex-grow-1 " style="list-style:none">
-                @foreach (var item in Model)
-                {
+            <div style="overflow-y: scroll; height: 530px; ">
+                <table class="table" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Avatar
+                            </th>
+                            <th>
+                                Name
+                            </th>
+                            <th>Action</th>
 
-                    <li class="nav-item mb-2">
-                        @{
-                            if (item.Avatar == "avatar1.png")
-                            {
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @{
+                                    if (item.Avatar == "avatar1.png")
+                                    {
+                                        <td>
+                                            <div>
+                                                <img src="/images/icons/avatar1.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+                                            </div>
+                                        </td>
+                                    }
+                                    else if (item.Avatar == "avatar2.png")
+                                    {
+                                        <td>
+                                            <div>
+                                                <img src="/images/icons/avatar2.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+                                            </div>
+                                        </td>
+                                    }
+                                    else if (item.Avatar == "avatar3.png")
+                                    {
+                                        <td>
+                                            <div>
+                                                <img src="/images/icons/avatar3.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+                                            </div>
+                                        </td>
+                                    }
+                                    else if (item.Avatar == "avatar4.png")
+                                    {
+                                        <td>
+                                            <div>
+                                                <img src="/images/icons/avatar4.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+                                            </div>
+                                        </td>
+                                    }
+                                }
+                                <td style="font-size:22px">
+                                    <a style="border-radius:10px; text-decoration:none" href="/Messengerr/Chat?receiverId=@item.Id">@item.FullName</a>
+                                </td>
+                                <td style="width:150px !important;">
+                                   
 
+                                        @Html.ActionLink("",
+                        "Delete", "Messengerr", new { Id = item.Id },
+                        new { @style = "color:orangered !important; background-color:transparent !important; ", @class = "fa fa-trash", onclick = "return confirm('Do you really want to Delete " + item.FullName + "?')" })
 
-                                <img src="/images/icons/avatar1.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
-
-
-                            }
-                            else if (item.Avatar == "avatar2.png")
-                            {
-
-
-                                <img src="/images/icons/avatar2.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
-
-                            }
-                            else if (item.Avatar == "avatar2.png")
-                            {
-
-                                <img src="/images/icons/avatar3.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
-
-                            }
-                            else if (item.Avatar == "avatar3.png")
-                            {
-
-                                <img src="/images/icons/avatar4.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
-
-                            }
+                                    
+                                </td>
+                            </tr>
                         }
-                        <a style="border-radius:10px; margin-left:50px !important " href="/Messengerr/Chat?receiverId=@item.Id">@item.FullName</a>
-                    </li>
+                    </tbody>
+                </table>
+                @*<ul class="navbar-nav flex-grow-1 " style="list-style: none; float: left !important; width: 400px !important; display:block !important">
+            @foreach (var item in Model)
+            {
 
-                }
-            </ol>
+                <li class=" mb-2 " style="margin-bottom:20px; margin-top:20px;">
+                    @{
+                        if (item.Avatar == "avatar1.png")
+                        {
 
-        </div>
+
+                            <img src="/images/icons/avatar1.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+
+
+                        }
+                        else if (item.Avatar == "avatar2.png")
+                        {
+
+
+                            <img src="/images/icons/avatar2.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+
+                        }
+                        else if (item.Avatar == "avatar3.png")
+                        {
+
+                            <img src="/images/icons/avatar3.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+
+                        }
+                        else if (item.Avatar == "avatar4.png")
+                        {
+
+                            <img src="/images/icons/avatar4.png" class="user-avatar" data-bind="attr: { src: '/images/icons/' + myAvatar() }" />
+
+                        }
+                    }
+                    <a style="border-radius:10px; " href="/Messengerr/Chat?receiverId=@item.Id">@item.FullName</a>
+                    <a href="#" style="color:white !important; background-color:white !important;">
+
+                        @Html.ActionLink("",
+        "Delete", "Messengerr", new { Id = item.Id },
+        new { @style = "color:orangered !important; background-color:white !important;", @class = "fa fa-trash", onclick = "return confirm('Do you really want to Delete " + item.FullName + "?')" })
+
+                    </a>
+                </li>
+            }
+
+        </ul>*@
+            </div>
+            </div>
     </div>
     <div class="col-lg-1 col-md-1 col-xl-1 col-sm-1" style="background-color:#eee !important; height : 100%;"></div>
 </div>
-
-
-
-
+<script>
+    function myFunction2() {
+  alert("I am an alert box!");
+}
+</script>

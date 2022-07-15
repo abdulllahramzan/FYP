@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -30,6 +33,50 @@ namespace Chat.Web.Hubs
             _context = context;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+        }
+
+        public static string EncryptString(string plainText)
+        {
+            var key = "b14ca5898a4e4133bbce2ea2315a1916";
+            byte[] iv = new byte[16];
+            byte[] array;
+
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = Encoding.UTF8.GetBytes(key);
+                aes.IV = iv;
+
+                ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+
+                using MemoryStream memoryStream = new();
+                using CryptoStream cryptoStream = new((Stream)memoryStream, encryptor, CryptoStreamMode.Write);
+                using (StreamWriter streamWriter = new((Stream)cryptoStream))
+                {
+                    streamWriter.Write(plainText);
+                }
+
+                array = memoryStream.ToArray();
+            }
+            return Convert.ToBase64String(array);
+        }
+
+        public static string DecryptString(string cipherText)
+        {
+            var key = "b14ca5898a4e4133bbce2ea2315a1916";
+            byte[] iv = new byte[16];
+            byte[] buffer = Convert.FromBase64String(cipherText);
+
+            using Aes aes = Aes.Create();
+            aes.Key = Encoding.UTF8.GetBytes(key);
+            aes.IV = iv;
+            ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+            using MemoryStream memoryStream = new(buffer);
+            using CryptoStream cryptoStream = new((Stream)memoryStream, decryptor, CryptoStreamMode.Read);
+            using StreamReader streamReader = new((Stream)cryptoStream);
+            var arr = streamReader.ReadToEnd();
+            return arr;
+
         }
         public async Task SendPrivateMessage(string receiverId, string message, string time)
         {
@@ -87,13 +134,16 @@ namespace Chat.Web.Hubs
                     // Create and save message in database
                     var msg = new Message()
                     {
-                        Content = Regex.Replace(message, @"(?i)<(?!img|a|/a|/img).*?>", string.Empty),
+                        Content = EncryptString(message),
                         FromUser = user,
                         ToRoom = room,
                         Timestamp = DateTime.Now
                     };
+
                     _context.Messages.Add(msg);
                     _context.SaveChanges();
+
+                    msg.Content = DecryptString(msg.Content);
 
                     // Broadcast the message
                     var messageViewModel = _mapper.Map<Message, MessageViewModel>(msg);
@@ -232,14 +282,27 @@ namespace Chat.Web.Hubs
         public IEnumerable<MessageViewModel> GetMessageHistory(string roomName)
         {
             var messageHistory = _context.Messages.Where(m => m.ToRoom.Name == roomName)
-                    .Include(m => m.FromUser)
-                    .Include(m => m.ToRoom)
+                   .Include(m => m.FromUser)
+                   .Include(m => m.ToRoom)
                     .OrderByDescending(m => m.Timestamp)
-                    .Take(20)
-                    .AsEnumerable()
-                    .Reverse()
-                    .ToList();
+                   .Take(20)
+                   .AsEnumerable()
+                   .Reverse()
+                   .ToList();
+            messageHistory = _context.Messages.Where(m => m.ToRoom.Name == roomName).ToList();
+            int x = messageHistory.ToArray().Length;
 
+            int a = 0;
+            int i;
+            for (i = 1; i <= x; i++)
+            {
+                messageHistory[a].Content = DecryptString(messageHistory[a].Content);
+                a++;
+                if (i > x)
+                {
+                    break;
+                }
+            }
             return _mapper.Map<IEnumerable<Message>, IEnumerable<MessageViewModel>>(messageHistory);
         }
 

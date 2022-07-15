@@ -54,9 +54,14 @@ document.getElementById("messengerButton").addEventListener("click", function (e
 
 connection.on("ReceiveMessage", function (senderName, message, time) {
     var p = document.createElement("p");
+    var i = document.createElement("p");
     p.textContent = `${message}`;
-    p.classList.add("receiver")
-    document.getElementsByClassName("messageCustom")[0].appendChild(p);
+    i.textContent = `${time}`;
+    i.classList.add("receiver2");
+    p.classList.add("receiver");
+
+    i.appendChild(p)
+    document.getElementsByClassName("messageCustom")[0].appendChild(i);
 });
 
 document.getElementById("messengerInput").addEventListener("focus", function (event) {
@@ -86,4 +91,45 @@ document.getElementById("messengerInput").addEventListener("blur", function (eve
 
 connection.on("HideTyping", function () {
     document.getElementsByClassName("showtyping")[0].remove();
+});
+
+$(function () {
+    $('ul#users-list').on('click', 'li', function () {
+        var username = $("input[type=hidden].username", $(this)).val();
+        var input = $('#chat-message');
+
+        var text = input.val();
+        if (text.startsWith("/")) {
+            text = text.split(")")[1];
+        }
+
+        text = "/private(" + username + ") " + text.trim();
+        input.val(text);
+        input.change();
+        input.focus();
+    });
+
+    $('#emojis-container').on('click', 'a', function () {
+        var value = $("input", $(this)).val();
+        var input = $('#messengerInput');
+        input.val(input.val() + value);
+        input.focus();
+        input.change();
+    });
+
+    $("#emojibtn").click(function () {
+        $("#emojis-container").toggleClass("d-none");
+    });
+
+    $("#chat-message, #btn-send-message").click(function () {
+        $("#emojis-container").addClass("d-none")
+    });
+
+    $('.modal').on('hidden.bs.modal', function () {
+        $(".modal-body input").val("");
+    });
+
+    $(".alert .close").on('click', function () {
+        $(this).parent().hide();
+    });
 });

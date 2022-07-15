@@ -38,7 +38,7 @@ namespace Chat.Web.Controllers
             List<ApplicationUser> users = new List<ApplicationUser>();
             string senderId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault().Value.ToString();
             var friends = _context.Friends.Where(c => c.FriendStatus == "Approved" &&
-            c.RequestedById == senderId && c.BecameFriendsTime != null || c.RequestedToId == senderId && c.BecameFriendsTime != null && c.FriendStatus == "Approved").ToList();
+            c.RequestedById == senderId || c.RequestedToId == senderId && c.FriendStatus == "Approved").ToList();
             foreach (var items in friends)
             {
                 var userRequestsBy = _context.AppUsers.FirstOrDefault(c => items.RequestedById != senderId && c.Id == items.RequestedById);
@@ -60,8 +60,10 @@ namespace Chat.Web.Controllers
         {
             List<ApplicationUser> userss = new List<ApplicationUser>();
             string senderId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault().Value.ToString();
-            var users = _context.AppUsers.Where(c => c.Id != senderId).ToList();
-            var friends = _context.Friends.Where(c => c.RequestedById == senderId && c.FriendStatus == "Approved" || c.RequestedToId == senderId && c.FriendStatus == "Approved").ToList();
+            var users = _context.AppUsers.Where(c => c.Id != senderId && c.UserName != "Admin").ToList();
+            var friends = _context.Friends.Where(c => c.RequestedById == senderId && c.FriendStatus == "Approved" ||
+            c.RequestedToId == senderId && c.FriendStatus == "Approved" || c.RequestedById == senderId && c.FriendStatus == "Pending" ||
+             c.RequestedToId == senderId && c.FriendStatus == "Pending" ).ToList();
             foreach (var items in friends)
             {
                 var userRequestsBy = _context.AppUsers.FirstOrDefault(c => items.RequestedById != senderId && c.Id == items.RequestedById);
@@ -85,11 +87,20 @@ namespace Chat.Web.Controllers
         {
             Friends friends = new Friends();
             string senderId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault().Value.ToString();
-            friends.RequestedById = senderId;
-            friends.RequestedToId = Id;
-            friends.RequestTime = DateTime.UtcNow;
-            friends.FriendStatus = Enums.Enum.FriendStatus.Pending.ToString();
-            _context.Friends.Add(friends);
+            var checkFriend = _context.Friends.FirstOrDefault(c => c.RequestedById == senderId && c.RequestedToId == Id ||
+                                                c.RequestedToId == senderId && c.RequestedById == Id);
+            if (checkFriend == null)
+            {
+                friends.RequestedById = senderId;
+                friends.RequestedToId = Id;
+                friends.RequestTime = DateTime.Now;
+                friends.FriendStatus = Enums.Enum.FriendStatus.Pending.ToString();
+                _context.Friends.Add(friends);
+            }
+            else if(checkFriend.FriendStatus == Enums.Enum.FriendStatus.Rejected.ToString())
+            {
+                checkFriend.FriendStatus = Enums.Enum.FriendStatus.Pending.ToString();
+            }
             _context.SaveChanges();
             return Redirect("/Messengerr/AllUsers");
         }
@@ -99,10 +110,10 @@ namespace Chat.Web.Controllers
         {
             List<ApplicationUser> users = new List<ApplicationUser>();
             string senderId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault().Value.ToString();
-            var req = _context.Friends.Where(c => c.BecameFriendsTime == null &&
-                                                c.FriendStatus == Enums.Enum.FriendStatus.Pending.ToString() &&
+            var req = _context.Friends.Where(c => c.FriendStatus == Enums.Enum.FriendStatus.Pending.ToString() &&
                                                 c.RequestedTo.Id == senderId || c.RequestedById == senderId).ToList();
-            if(req != null)
+
+            if (req != null)
             {
                 foreach(var items in req)
                 {
@@ -125,8 +136,8 @@ namespace Chat.Web.Controllers
         public IActionResult ActOnRequest(string Id, string status)
         {
             string senderId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault().Value.ToString();
-            var req = _context.Friends.Where(c => c.RequestedById == Id || c.RequestedToId == Id 
-             && c.RequestedToId == senderId || c.RequestedById == senderId && c.BecameFriendsTime == null && c.FriendStatus == Enums.Enum.FriendStatus.Pending.ToString()).FirstOrDefault();
+            var req = _context.Friends.Where(c => c.RequestedById == Id && c.RequestedToId == senderId && c.FriendStatus == Enums.Enum.FriendStatus.Pending.ToString() || c.RequestedToId == Id 
+             && c.RequestedToId == senderId  && c.FriendStatus == Enums.Enum.FriendStatus.Pending.ToString()).FirstOrDefault();
             if(status == "approve")
             {
                 req.FriendStatus = Enums.Enum.FriendStatus.Approved.ToString();
@@ -135,11 +146,23 @@ namespace Chat.Web.Controllers
             {
                 req.FriendStatus = Enums.Enum.FriendStatus.Rejected.ToString();
             }
-            req.BecameFriendsTime = DateTime.UtcNow;
+            req.BecameFriendsTime = DateTime.Now;
             _context.Friends.Update(req);
             _context.SaveChanges();
             return Redirect("/Messengerr/privateUsers");
         }
+
+        [HttpGet("Delete")]
+        public IActionResult Delete(string Id)
+        {
+            string senderId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault().Value.ToString();
+            var friends = _context.Friends.FirstOrDefault(c => c.RequestedById == senderId && c.RequestedToId == Id ||
+                                                c.RequestedToId == senderId && c.RequestedById == Id );
+            _context.Friends.Remove(friends);
+            _context.SaveChanges();
+            return Redirect("/Messengerr/privateUsers");
+        }
+
         [HttpGet("Chat")]
         public IActionResult Chat(string receiverId)
         {

@@ -99,14 +99,12 @@ button.accept-policy {
 html {
     position: relative;
     min-height: 100%;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+/*    margin-bottom: 60px;*/
     background-color: white;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .footer {
@@ -133,7 +131,7 @@ body {
 
 .sender {
     padding: 10px;
-    background-color: #188a2c;
+    background-color: #4493d3;
     color: white;
     font-weight: 600;
     align-self: end;
@@ -143,7 +141,7 @@ body {
 .sender2 {
     padding-top: 5px;
     margin-top: 10px;
-    background-color: #188a2c;
+    background-color: #4493d3;
     color: white;
     font-weight: 600;
     font-size: 14px;
@@ -155,9 +153,21 @@ body {
 
 .receiver {
     padding: 10px;
-    background-color: #ff5e00;
-    color: white;
+    background-color: #f3eeee;
+    color: #606060;
     font-weight: 600;
+    align-self: start;
+    max-width: 500px;
+    border-radius: 13px;
+}
+.receiver2 {
+    padding-top: 5px;
+    margin-top: 10px;
+    background-color: #f3eeee;
+    color: #606060;
+    font-weight: 600;
+    font-size: 12px;
+    height: 60px;
     align-self: start;
     max-width: 500px;
     border-radius: 13px;
