@@ -140,11 +140,11 @@ namespace Chat.Web.Hubs
                         Timestamp = DateTime.Now
                     };
 
+                    
                     _context.Messages.Add(msg);
                     _context.SaveChanges();
 
                     msg.Content = DecryptString(msg.Content);
-
                     // Broadcast the message
                     var messageViewModel = _mapper.Map<Message, MessageViewModel>(msg);
                     await Clients.Group(roomName).SendAsync("newMessage", messageViewModel);
